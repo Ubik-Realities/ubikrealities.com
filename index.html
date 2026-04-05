@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0c0c0e;--text:#b8b2a8;--bright:#d4cfc6;--dim:#4a4640;--cyan:#5a9e9e;--red:#ad4a4a;--card-bg:rgba(255,255,255,0.015);--card-border:rgba(255,255,255,0.04)}
+:root{--bg:#0c0c0e;--text:#d4cfc6;--bright:#f0ebe3;--dim:#8a8580;--cyan:#5a9e9e;--red:#ad4a4a;--card-bg:rgba(255,255,255,0.015);--card-border:rgba(255,255,255,0.04)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;min-height:100vh;overflow-x:hidden}
 
@@ -49,7 +49,7 @@ nav{padding:24px 0;display:flex;justify-content:space-between;align-items:center
 .hero h1 em{font-family:'EB Garamond',serif;font-style:italic;position:relative}
 .hero h1 em::after{content:'actually';position:absolute;left:2px;top:1px;color:rgba(0,255,200,0.15);pointer-events:none}
 .tagline{font-size:13px;color:var(--dim);line-height:1.9;max-width:480px;margin-bottom:24px}
-.rx-label{font-family:'VT323',monospace;font-size:14px;letter-spacing:4px;text-transform:uppercase;color:var(--red);opacity:0.6;display:block;margin-bottom:32px}
+.rx-label{font-family:'VT323',monospace;font-size:14px;letter-spacing:4px;text-transform:uppercase;color:#d46a6a;opacity:0.8;display:block;margin-bottom:32px}
 
 /* Email capture form */
 .email-form{display:flex;gap:8px;max-width:460px}
@@ -95,7 +95,7 @@ nav{padding:24px 0;display:flex;justify-content:space-between;align-items:center
 @keyframes card-scan{from{top:0;opacity:0.5}to{top:100%;opacity:0}}
 .app-day{font-family:'VT323',monospace;font-size:13px;letter-spacing:2px;color:var(--dim);margin-bottom:8px}
 .app-name{font-family:'EB Garamond',serif;font-size:22px;color:var(--bright);margin-bottom:6px}
-.app-desc{font-size:12px;color:var(--text);line-height:1.6;margin-bottom:16px;opacity:0.7}
+.app-desc{font-size:12px;color:var(--text);line-height:1.6;margin-bottom:16px}
 .app-footer{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--card-border)}
 .app-status{font-family:'VT323',monospace;font-size:13px;letter-spacing:1px}
 .shipped{color:var(--cyan)}
@@ -156,8 +156,8 @@ footer{border-top:1px solid var(--card-border);padding:32px 0;display:flex;justi
   <div class="logo">ubik</div>
   <ul class="nav-links">
     <li><a href="#catalog">Apps</a></li>
-    <li><a href="https://github.com/ubik" target="_blank">GitHub</a></li>
-    <li><a href="https://patreon.com/ubik" target="_blank" class="support-link">Patreon</a></li>
+    <li><a href="https://github.com/Ubik-Realities" target="_blank">GitHub</a></li>
+    <li><a href="https://www.patreon.com/c/UbikRealities" target="_blank" class="support-link">Patreon</a></li>
   </ul>
 </nav>
 
@@ -291,23 +291,14 @@ footer{border-top:1px solid var(--card-border);padding:32px 0;display:flex;justi
   </div>
 </section>
 
-<!-- BOTTOM CTA -->
-<section style="text-align:center;padding:60px 0 80px;border-top:1px solid var(--card-border);margin-top:60px" id="bottom-cta">
-  <h2 style="font-family:'VT323',monospace;font-size:28px;color:var(--bright);letter-spacing:3px;margin-bottom:8px">Don't miss a transmission.</h2>
-  <p style="font-size:13px;color:var(--dim);margin-bottom:20px">Every app. Every build story. Your inbox. No noise.</p>
-  <div class="email-form" id="bottom-email-form" style="margin:0 auto;justify-content:center">
-    <input type="email" id="bottom-email" placeholder="your@email.com" required>
-    <button onclick="captureEmail('bottom')">Subscribe →</button>
-  </div>
-  <div class="form-success" id="bottom-success">▶ YOU'RE IN. Welcome aboard.</div>
-</section>
-
-<footer>
+<!-- FOOTER -->
   <div class="footer-info">ubik<br>Apps that make you think different.<br>Safe to use as directed.</div>
   <div class="footer-links">
-    <a href="https://github.com/ubik" target="_blank">GitHub</a>
-    <a href="https://twitter.com/ubik" target="_blank">Twitter</a>
-    <a href="https://patreon.com/ubik" target="_blank">Patreon</a>
+    <a href="https://github.com/Ubik-Realities" target="_blank">GitHub</a>
+    <a href="https://twitter.com/ubikrealities" target="_blank">Twitter</a>
+    <a href="https://mastodon.social/@ubikrealities" target="_blank">Mastodon</a>
+    <a href="https://bsky.app/profile/ubikrealities.bsky.social" target="_blank">Bluesky</a>
+    <a href="https://www.patreon.com/c/UbikRealities" target="_blank">Patreon</a>
   </div>
 </footer>
 
