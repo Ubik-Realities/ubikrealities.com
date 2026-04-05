@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ubik — built for the way your brain actually works.</title>
+<meta name="description" content="30 native Mac apps in 30 days. Built with AI. Shipped with taste. Get early access to everything.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c0e;--text:#b8b2a8;--bright:#d4cfc6;--dim:#4a4640;--cyan:#5a9e9e;--red:#ad4a4a;--card-bg:rgba(255,255,255,0.015);--card-border:rgba(255,255,255,0.04)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;min-height:100vh;overflow-x:hidden}
+
+/* Scanlines */
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.15) 2px,rgba(0,0,0,0.15) 4px);pointer-events:none;z-index:9998}
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:9999;animation:flicker 8s infinite}
+@keyframes flicker{0%,97%,100%{opacity:0}97.5%{opacity:0.03;background:white}}
+
+.tracking-bar{position:fixed;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.08) 20%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.08) 80%,transparent 100%);z-index:9997;animation:tracking 12s linear infinite;pointer-events:none}
+@keyframes tracking{0%{top:-3px}100%{top:100vh}}
+
+.vhs-timestamp{position:fixed;bottom:20px;right:24px;font-family:'VT323',monospace;font-size:18px;color:rgba(180,170,155,0.3);z-index:100;letter-spacing:2px}
+.vhs-timestamp::before{content:'● REC';color:rgba(200,60,60,0.4);margin-right:12px;animation:rec-blink 2s step-end infinite}
+@keyframes rec-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.vhs-play{position:fixed;top:20px;right:24px;font-family:'VT323',monospace;font-size:16px;color:rgba(180,170,155,0.2);z-index:100;letter-spacing:2px}
+
+.container{max-width:1100px;margin:0 auto;padding:0 32px}
+
+/* Nav */
+nav{padding:24px 0;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--card-border)}
+.logo{font-family:'VT323',monospace;font-size:32px;color:var(--bright);letter-spacing:8px;text-transform:lowercase;position:relative}
+.logo::before{content:'ubik';position:absolute;left:-1px;top:0;color:rgba(0,255,200,0.3);animation:chromatic 6s ease-in-out infinite alternate}
+.logo::after{content:'ubik';position:absolute;left:1px;top:0;color:rgba(255,0,80,0.2);animation:chromatic 6s ease-in-out infinite alternate-reverse}
+@keyframes chromatic{0%{transform:translateX(0)}50%{transform:translateX(-1px)}100%{transform:translateX(1px)}}
+.nav-links{display:flex;gap:24px;list-style:none;align-items:center}
+.nav-links a{font-family:'VT323',monospace;font-size:16px;color:var(--dim);text-decoration:none;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s}
+.nav-links a:hover{color:var(--bright)}
+.nav-links .support-link{color:var(--cyan);border:1px solid rgba(90,158,158,0.3);padding:4px 14px}
+.nav-links .support-link:hover{background:var(--cyan);color:var(--bg)}
+
+/* Hero */
+.hero{padding:100px 0 60px}
+.hero-label{font-family:'VT323',monospace;font-size:14px;letter-spacing:4px;text-transform:uppercase;color:var(--dim);margin-bottom:32px;display:flex;align-items:center;gap:8px}
+.blink-cursor{display:inline-block;width:8px;height:14px;background:var(--dim);animation:cursor-blink 1s step-end infinite}
+@keyframes cursor-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.hero h1{font-family:'VT323',monospace;font-size:clamp(40px,6vw,80px);font-weight:400;line-height:1.1;color:var(--bright);max-width:800px;margin-bottom:28px}
+.hero h1 em{font-family:'EB Garamond',serif;font-style:italic;position:relative}
+.hero h1 em::after{content:'actually';position:absolute;left:2px;top:1px;color:rgba(0,255,200,0.15);pointer-events:none}
+.tagline{font-size:13px;color:var(--dim);line-height:1.9;max-width:480px;margin-bottom:24px}
+.rx-label{font-family:'VT323',monospace;font-size:14px;letter-spacing:4px;text-transform:uppercase;color:var(--red);opacity:0.6;display:block;margin-bottom:32px}
+
+/* Email capture form */
+.email-form{display:flex;gap:8px;max-width:460px}
+.email-form input{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);padding:12px 16px;font-family:'Space Mono',monospace;font-size:13px;color:var(--bright);border-radius:0;outline:none;transition:border-color 0.2s}
+.email-form input::placeholder{color:var(--dim)}
+.email-form input:focus{border-color:var(--cyan)}
+.email-form button{font-family:'VT323',monospace;font-size:16px;letter-spacing:2px;text-transform:uppercase;padding:12px 24px;background:var(--cyan);color:var(--bg);border:none;cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.email-form button:hover{background:var(--bright)}
+.form-note{font-family:'VT323',monospace;font-size:12px;color:var(--dim);margin-top:8px;letter-spacing:1px}
+.form-success{display:none;font-family:'VT323',monospace;font-size:16px;color:var(--cyan);letter-spacing:2px}
+.form-success.show{display:block}
+.email-form.hidden{display:none}
+
+/* Divider */
+.glitch-divider{height:1px;background:var(--card-border);margin:60px 0;position:relative;overflow:hidden}
+.glitch-divider::after{content:'';position:absolute;top:-1px;left:-100%;width:60px;height:3px;background:rgba(255,255,255,0.1);animation:divider-scan 8s linear infinite}
+@keyframes divider-scan{0%{left:-60px}100%{left:100%}}
+
+/* What you get */
+.value-section{margin-bottom:60px}
+.value-section h2{font-family:'VT323',monospace;font-size:28px;color:var(--bright);letter-spacing:4px;margin-bottom:24px}
+.value-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2px}
+.value-card{border:1px solid var(--card-border);padding:20px;background:var(--card-bg)}
+.value-card h3{font-family:'EB Garamond',serif;font-size:18px;color:var(--bright);margin-bottom:6px}
+.value-card p{font-size:12px;color:var(--dim);line-height:1.6}
+
+/* Challenge box */
+.challenge-box{border:1px solid var(--card-border);padding:40px;margin-bottom:60px;position:relative;background:var(--card-bg)}
+.challenge-box::before{content:'SIGNAL RECOVERED';position:absolute;top:-9px;left:20px;font-family:'VT323',monospace;font-size:12px;letter-spacing:3px;color:var(--dim);background:var(--bg);padding:0 8px}
+.challenge-box::after{content:'';position:absolute;top:0;left:0;width:2px;height:100%;background:linear-gradient(180deg,var(--cyan),transparent);opacity:0.5}
+.challenge-number{font-family:'VT323',monospace;font-size:96px;color:rgba(90,158,158,0.07);position:absolute;right:40px;top:10px;line-height:1;pointer-events:none}
+.challenge-title{font-family:'EB Garamond',serif;font-size:28px;color:var(--bright);margin-bottom:12px}
+.challenge-desc{font-size:13px;color:var(--text);line-height:1.8;max-width:560px;margin-bottom:24px}
+
+/* Teaser grid - first 3 visible */
+.section-label{font-family:'VT323',monospace;font-size:14px;letter-spacing:6px;text-transform:uppercase;color:var(--dim);margin-bottom:40px;display:flex;align-items:center;gap:16px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--card-border)}
+
+.app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px;margin-bottom:0}
+.app-card{border:1px solid var(--card-border);padding:24px;background:var(--card-bg);transition:all 0.3s;position:relative;overflow:hidden}
+.app-card:hover{background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.08)}
+.app-card:hover::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0.3;animation:card-scan 0.5s ease-out}
+@keyframes card-scan{from{top:0;opacity:0.5}to{top:100%;opacity:0}}
+.app-day{font-family:'VT323',monospace;font-size:13px;letter-spacing:2px;color:var(--dim);margin-bottom:8px}
+.app-name{font-family:'EB Garamond',serif;font-size:22px;color:var(--bright);margin-bottom:6px}
+.app-desc{font-size:12px;color:var(--text);line-height:1.6;margin-bottom:16px;opacity:0.7}
+.app-footer{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--card-border)}
+.app-status{font-family:'VT323',monospace;font-size:13px;letter-spacing:1px}
+.shipped{color:var(--cyan)}
+.building{color:var(--red);animation:status-blink 2s step-end infinite}
+.upcoming{color:var(--dim)}
+@keyframes status-blink{0%,69%{opacity:1}70%,100%{opacity:0.4}}
+.app-price{font-family:'VT323',monospace;font-size:15px;color:var(--text)}
+
+/* Email gate overlay */
+.gate-section{position:relative;margin-bottom:100px}
+.gate-blur{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px;filter:blur(6px);opacity:0.3;pointer-events:none;max-height:400px;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%);mask-image:linear-gradient(180deg,rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%)}
+.gate-overlay{position:relative;text-align:center;padding:40px 20px;margin-top:-60px;z-index:10}
+.gate-overlay h3{font-family:'VT323',monospace;font-size:24px;color:var(--bright);letter-spacing:3px;margin-bottom:8px}
+.gate-overlay p{font-size:13px;color:var(--dim);margin-bottom:20px}
+.gate-overlay .email-form{margin:0 auto;justify-content:center}
+
+/* Full catalog (hidden until unlocked) */
+.full-catalog{display:none}
+.full-catalog.unlocked{display:block}
+
+/* Footer */
+footer{border-top:1px solid var(--card-border);padding:32px 0;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:60px}
+.footer-info{font-family:'VT323',monospace;font-size:14px;color:var(--dim);letter-spacing:1px;line-height:2}
+.footer-links{display:flex;gap:20px}
+.footer-links a{font-family:'VT323',monospace;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color 0.2s}
+.footer-links a:hover{color:var(--bright)}
+
+/* Counter */
+.counter-row{display:flex;gap:32px;margin:40px 0}
+.counter-item{text-align:center}
+.counter-num{font-family:'VT323',monospace;font-size:36px;color:var(--cyan);letter-spacing:2px}
+.counter-label{font-family:'VT323',monospace;font-size:11px;color:var(--dim);letter-spacing:2px;text-transform:uppercase}
+
+@media(max-width:768px){
+  .container{padding:0 20px}
+  .hero{padding:60px 0 40px}
+  .nav-links a:not(.support-link){display:none}
+  .challenge-box{padding:24px}
+  .challenge-number{display:none}
+  .app-grid,.gate-blur{grid-template-columns:1fr}
+  .vhs-timestamp,.vhs-play{display:none}
+  footer{flex-direction:column;gap:16px}
+  .email-form{flex-direction:column}
+  .counter-row{gap:16px}
+  .value-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="tracking-bar"></div>
+<div class="vhs-play">▶ PLAY</div>
+<div class="vhs-timestamp" id="vhs-time"></div>
+
+<div class="container">
+
+<nav>
+  <div class="logo">ubik</div>
+  <ul class="nav-links">
+    <li><a href="#catalog">Apps</a></li>
+    <li><a href="https://github.com/ubik" target="_blank">GitHub</a></li>
+    <li><a href="https://patreon.com/ubik" target="_blank" class="support-link">Patreon</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-label">A one-man software studio <span class="blink-cursor"></span></div>
+  <h1>Built for the way<br>your brain <em>actually</em> works.</h1>
+  <p class="tagline">Native Mac tools. Crafted with AI. Shipped with taste.<br>One per day for thirty days.</p>
+  <span class="rx-label">℞ Safe to use as directed</span>
+
+  <div id="hero-form">
+    <div class="email-form" id="hero-email-form">
+      <input type="email" id="hero-email" placeholder="your@email.com" required>
+      <button onclick="captureEmail('hero')">Get early access →</button>
+    </div>
+    <div class="form-note">Free. No spam. Unsubscribe anytime. Every app delivered to your inbox.</div>
+    <div class="form-success" id="hero-success">▶ SIGNAL RECEIVED. Check your inbox.</div>
+  </div>
+
+  <div class="counter-row">
+    <div class="counter-item"><div class="counter-num">30</div><div class="counter-label">Apps</div></div>
+    <div class="counter-item"><div class="counter-num">30</div><div class="counter-label">Days</div></div>
+    <div class="counter-item"><div class="counter-num">1</div><div class="counter-label">Builder</div></div>
+  </div>
+</section>
+
+<div class="glitch-divider"></div>
+
+<!-- WHAT YOU GET -->
+<section class="value-section">
+  <h2>What you get</h2>
+  <div class="value-grid">
+    <div class="value-card">
+      <h3>Every app, day one</h3>
+      <p>Download links delivered to your inbox the moment each app ships. Before anyone else.</p>
+    </div>
+    <div class="value-card">
+      <h3>Behind the build</h3>
+      <p>How each app was made, what broke, what worked. The real process, not the highlight reel.</p>
+    </div>
+    <div class="value-card">
+      <h3>The full catalog</h3>
+      <p>30 native Mac tools — productivity, creativity, language, privacy. All yours.</p>
+    </div>
+  </div>
+</section>
+
+<div class="glitch-divider"></div>
+
+<!-- CHALLENGE BOX -->
+<section>
+  <div class="challenge-box">
+    <div class="challenge-number">30</div>
+    <div class="challenge-title">30 apps in 30 days.</div>
+    <p class="challenge-desc">One native Mac app, every day, for thirty days. Built live with AI. Every app downloadable by end of day. Follow along and get early access to everything.</p>
+    <div class="email-form" id="challenge-email-form">
+      <input type="email" id="challenge-email" placeholder="your@email.com" required>
+      <button onclick="captureEmail('challenge')">I'm in →</button>
+    </div>
+    <div class="form-success" id="challenge-success">▶ YOU'RE IN. Welcome to the challenge.</div>
+  </div>
+</section>
+
+<div class="glitch-divider"></div>
+
+<!-- TEASER: First 3 apps visible -->
+<section id="catalog">
+  <div class="section-label">Preview · First 3 Transmissions</div>
+  <div class="app-grid" style="margin-bottom:0">
+    <div class="app-card"><div class="app-day">Day 01</div><div class="app-name">Lettera</div><div class="app-desc">Stop losing the thought that was going to change everything. Every fleeting idea, safe and waiting.</div><div class="app-footer"><span class="app-status shipped">▶ Shipped</span><span class="app-price">€5</span></div></div>
+    <div class="app-card"><div class="app-day">Day 02</div><div class="app-name">MacClaude</div><div class="app-desc">Everyone else alt-tabs to ChatGPT. You press one key and the answer is already there.</div><div class="app-footer"><span class="app-status shipped">▶ Shipped</span><span class="app-price">€5</span></div></div>
+    <div class="app-card"><div class="app-day">Day 03</div><div class="app-name">Oneiros</div><div class="app-desc">Arc abandoned you. We didn't. The browser you fell in love with, rebuilt so it can never be taken away.</div><div class="app-footer"><span class="app-status building">◉ Building</span><span class="app-price">Free</span></div></div>
+  </div>
+</section>
+
+<!-- EMAIL GATE: Blurred remaining apps -->
+<section class="gate-section" id="gate-section">
+  <div class="gate-blur">
+    <div class="app-card"><div class="app-day">Day 04</div><div class="app-name">Tsk</div><div class="app-desc">AI task manager.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€19</span></div></div>
+    <div class="app-card"><div class="app-day">Day 05</div><div class="app-name">Obliqua</div><div class="app-desc">Audio mutation engine.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€15</span></div></div>
+    <div class="app-card"><div class="app-day">Day 06</div><div class="app-name">Top 3</div><div class="app-desc">Daily prioritizer.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">Free</span></div></div>
+    <div class="app-card"><div class="app-day">Day 07</div><div class="app-name">ICE</div><div class="app-desc">Decision scorer.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">Free</span></div></div>
+    <div class="app-card"><div class="app-day">Day 08</div><div class="app-name">Veitia</div><div class="app-desc">Energy matrix.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">Free</span></div></div>
+    <div class="app-card"><div class="app-day">Day 09</div><div class="app-name">Capture</div><div class="app-desc">Quick inbox.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">Free</span></div></div>
+  </div>
+  <div class="gate-overlay">
+    <h3>27 more apps behind this wall.</h3>
+    <p>Drop your email. Get the full catalog and every app delivered on launch day.</p>
+    <div class="email-form" id="gate-email-form">
+      <input type="email" id="gate-email" placeholder="your@email.com" required>
+      <button onclick="captureEmail('gate')">Unlock all 30 →</button>
+    </div>
+    <div class="form-success" id="gate-success">▶ UNLOCKED. Scroll down.</div>
+  </div>
+</section>
+
+<!-- FULL CATALOG (hidden until email captured) -->
+<section class="full-catalog" id="full-catalog">
+  <div class="section-label">Full Catalog · 30 Transmissions</div>
+  <div class="app-grid">
+    <div class="app-card"><div class="app-day">Day 01</div><div class="app-name">Lettera</div><div class="app-desc">Stop losing the thought that was going to change everything. Every fleeting idea, safe and waiting.</div><div class="app-footer"><span class="app-status shipped">▶ Shipped</span><span class="app-price">€5</span></div></div>
+    <div class="app-card"><div class="app-day">Day 02</div><div class="app-name">MacClaude</div><div class="app-desc">Everyone else alt-tabs to ChatGPT. You press one key and the answer is already there.</div><div class="app-footer"><span class="app-status shipped">▶ Shipped</span><span class="app-price">€5</span></div></div>
+    <div class="app-card"><div class="app-day">Day 03</div><div class="app-name">Oneiros</div><div class="app-desc">Arc abandoned you. We didn't. The browser you fell in love with, rebuilt so it can never be taken away.</div><div class="app-footer"><span class="app-status building">◉ Building</span><span class="app-price">Free</span></div></div>
+    <div class="app-card"><div class="app-day">Day 04</div><div class="app-name">Tsk</div><div class="app-desc">That 3am panic about what you're forgetting? Gone. AI holds the weight so you can hold your kids.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€19</span></div></div>
+    <div class="app-card"><div class="app-day">Day 05</div><div class="app-name">Obliqua</div><div class="app-desc">Your music is stuck because you are. Let something else make the decision you're afraid to make.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€15</span></div></div>
+    <div class="app-card"><div class="app-day">Day 06</div><div class="app-name">Top 3</div><div class="app-desc">Stop doing 20 things badly. Do three things so well that people notice.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">Free</span></div></div>
+    <div class="app-card"><div class="app-day">Day 07</div><div class="app-name">ICE</div><div class="app-desc">The coworker who always picks the right project first? This is how their brain works.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">Free</span></div></div>
+    <div class="app-card"><div class="app-day">Day 08</div><div class="app-name">Veitia</div><div class="app-desc">Bad sleep, sick kid, no coffee. You still need to function. This knows what you can handle today.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">Free</span></div></div>
+    <div class="app-card"><div class="app-day">Day 09</div><div class="app-name">Capture</div><div class="app-desc">The idea comes in the shower, at dinner, in the car. One key. It's saved. Go back to your life.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">Free</span></div></div>
+    <div class="app-card"><div class="app-day">Day 10</div><div class="app-name">Debrief</div><div class="app-desc">That Sunday dread? Replace it with 30 minutes of clarity that makes Monday feel like a weapon.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€9</span></div></div>
+    <div class="app-card"><div class="app-day">Day 11</div><div class="app-name">Obliqua Prose</div><div class="app-desc">Chapter 12 has been open for three weeks. Let something chaotic crack it open for you.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€9</span></div></div>
+    <div class="app-card"><div class="app-day">Day 12</div><div class="app-name">Parler</div><div class="app-desc">You live here. Your neighbors still switch to English for you. Stop being the tourist who stayed.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€9/mo</span></div></div>
+    <div class="app-card"><div class="app-day">Day 13</div><div class="app-name">Volapük</div><div class="app-desc">A language dies every two weeks. This one gets to live a little longer because you showed up.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">Free</span></div></div>
+    <div class="app-card"><div class="app-day">Day 14</div><div class="app-name">Glossa</div><div class="app-desc">Tolkien built Elvish before he wrote a single chapter. Your world deserves a voice that's entirely its own.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€12</span></div></div>
+    <div class="app-card"><div class="app-day">Day 15</div><div class="app-name">Agora</div><div class="app-desc">You don't need another answer. You need the question you've been avoiding. This only asks.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€5</span></div></div>
+    <div class="app-card"><div class="app-day">Day 16</div><div class="app-name">Witness</div><div class="app-desc">"Can you repeat what you said about the deadline?" Never again. Every word, private, on your machine.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€10/mo</span></div></div>
+    <div class="app-card"><div class="app-day">Day 17</div><div class="app-name">Precinct</div><div class="app-desc">You're not uninformed. You're mis-informed. See which stories are moving real votes in your state.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">Free</span></div></div>
+    <div class="app-card"><div class="app-day">Day 18</div><div class="app-name">Civics</div><div class="app-desc">Your kid asks why people are angry on TV. Know enough to give them a real answer, not a tribal one.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">Free</span></div></div>
+    <div class="app-card"><div class="app-day">Day 19</div><div class="app-name">Manuscript</div><div class="app-desc">A book coach charges $1,200. You've spent $0 and rewritten chapter one nine times. Get unstuck for less.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€15/mo</span></div></div>
+    <div class="app-card"><div class="app-day">Day 20</div><div class="app-name">Digest</div><div class="app-desc">You opened three news apps today and feel worse about everything. One screen. Only what matters to you.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€5</span></div></div>
+    <div class="app-card"><div class="app-day">Day 21</div><div class="app-name">1040</div><div class="app-desc">The IRS doesn't care that you moved to France. Know what you owe before they tell you what you owe.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€19</span></div></div>
+    <div class="app-card"><div class="app-day">Day 22</div><div class="app-name">Audit</div><div class="app-desc">Your competitor's agency charges $500 for this report. You'll have it in 60 seconds before the call starts.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€49/mo</span></div></div>
+    <div class="app-card"><div class="app-day">Day 23</div><div class="app-name">Chronicle</div><div class="app-desc">Six years of stories told around a table. Now the table is yours and the world remembers your choices.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">Free</span></div></div>
+    <div class="app-card"><div class="app-day">Day 24</div><div class="app-name">Liberation Front: Windows</div><div class="app-desc">Your app only runs on Mac. 76% of the world just closed the tab. Fix that in an afternoon.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€29</span></div></div>
+    <div class="app-card"><div class="app-day">Day 25</div><div class="app-name">Liberation Front: Linux</div><div class="app-desc">Same liberation. Different penguins.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€29</span></div></div>
+    <div class="app-card"><div class="app-day">Day 26</div><div class="app-name">Flux</div><div class="app-desc">You copied it. You know you copied it. It's gone. Never lose what you already held in your hands.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€8</span></div></div>
+    <div class="app-card"><div class="app-day">Day 27</div><div class="app-name">Allen</div><div class="app-desc">David Allen drew the blueprints. Nobody built the building. We poured the concrete.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€19</span></div></div>
+    <div class="app-card"><div class="app-day">Day 28</div><div class="app-name">Rendez-vous</div><div class="app-desc">Calendly takes a cut and owns your calendar data. Keep your schedule and your dignity.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€5/mo</span></div></div>
+    <div class="app-card"><div class="app-day">Day 29</div><div class="app-name">Shutter</div><div class="app-desc">CleanShot costs $29. Your screenshot needs an arrow and a blur. Let's not overthink this.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€8</span></div></div>
+    <div class="app-card"><div class="app-day">Day 30</div><div class="app-name">Launch</div><div class="app-desc">The last app. The one that launches everything else. Faster than Spotlight. Yours to extend.</div><div class="app-footer"><span class="app-status upcoming">○ Upcoming</span><span class="app-price">€8/mo</span></div></div>
+  </div>
+</section>
+
+<!-- BOTTOM CTA -->
+<section style="text-align:center;padding:60px 0 80px;border-top:1px solid var(--card-border);margin-top:60px" id="bottom-cta">
+  <h2 style="font-family:'VT323',monospace;font-size:28px;color:var(--bright);letter-spacing:3px;margin-bottom:8px">Don't miss a transmission.</h2>
+  <p style="font-size:13px;color:var(--dim);margin-bottom:20px">Every app. Every build story. Your inbox. No noise.</p>
+  <div class="email-form" id="bottom-email-form" style="margin:0 auto;justify-content:center">
+    <input type="email" id="bottom-email" placeholder="your@email.com" required>
+    <button onclick="captureEmail('bottom')">Subscribe →</button>
+  </div>
+  <div class="form-success" id="bottom-success">▶ YOU'RE IN. Welcome aboard.</div>
+</section>
+
+<footer>
+  <div class="footer-info">ubik<br>Apps that make you think different.<br>Safe to use as directed.</div>
+  <div class="footer-links">
+    <a href="https://github.com/ubik" target="_blank">GitHub</a>
+    <a href="https://twitter.com/ubik" target="_blank">Twitter</a>
+    <a href="https://patreon.com/ubik" target="_blank">Patreon</a>
+  </div>
+</footer>
+
+</div>
+
+<script>
+// VHS timestamp
+function updateTimestamp(){
+  const now=new Date();
+  const h=String(now.getHours()).padStart(2,'0');
+  const m=String(now.getMinutes()).padStart(2,'0');
+  const s=String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('vhs-time').textContent=h+':'+m+':'+s;
+}
+setInterval(updateTimestamp,1000);
+updateTimestamp();
+
+// Check if already subscribed
+if(localStorage.getItem('ubik-email')){
+  unlockCatalog();
+}
+
+function captureEmail(source){
+  const input=document.getElementById(source+'-email');
+  const email=input.value.trim();
+  if(!email||!email.includes('@'))return;
+
+  // Store locally
+  localStorage.setItem('ubik-email',email);
+  localStorage.setItem('ubik-source',source);
+
+  // TODO: Replace with your email service endpoint
+  // Example for Buttondown:
+  // fetch('https://api.buttondown.email/v1/subscribers',{
+  //   method:'POST',
+  //   headers:{'Authorization':'Token YOUR_API_KEY','Content-Type':'application/json'},
+  //   body:JSON.stringify({email:email,tags:[source]})
+  // });
+  //
+  // Example for ConvertKit:
+  // fetch('https://api.convertkit.com/v3/forms/YOUR_FORM_ID/subscribe',{
+  //   method:'POST',
+  //   headers:{'Content-Type':'application/json'},
+  //   body:JSON.stringify({api_key:'YOUR_KEY',email:email})
+  // });
+
+  // Show success on this form
+  document.getElementById(source+'-email-form').classList.add('hidden');
+  document.getElementById(source+'-success').classList.add('show');
+
+  // Unlock catalog
+  unlockCatalog();
+
+  // Hide all other forms too
+  ['hero','challenge','gate','bottom'].forEach(function(s){
+    const form=document.getElementById(s+'-email-form');
+    const success=document.getElementById(s+'-success');
+    if(form)form.classList.add('hidden');
+    if(success)success.classList.add('show');
+  });
+}
+
+function unlockCatalog(){
+  // Hide gate section
+  const gate=document.getElementById('gate-section');
+  if(gate)gate.style.display='none';
+
+  // Show full catalog
+  const catalog=document.getElementById('full-catalog');
+  if(catalog)catalog.classList.add('unlocked');
+
+  // Hide all email forms, show success
+  ['hero','challenge','gate','bottom'].forEach(function(s){
+    const form=document.getElementById(s+'-email-form');
+    const success=document.getElementById(s+'-success');
+    if(form)form.classList.add('hidden');
+    if(success)success.classList.add('show');
+  });
+}
+</script>
+
+</body>
+</html>
